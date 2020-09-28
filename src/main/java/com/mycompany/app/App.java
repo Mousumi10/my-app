@@ -9,19 +9,15 @@ import com.amazonaws.services.ec2.model.StartInstancesRequest;
 import com.amazonaws.services.ec2.model.StopInstancesRequest;
 
 @SuppressWarnings("unused")
-public class App implements RequestHandler<Object, String> {
+public class App implements RequestHandler<Object, Object> {
 
-    public String handleRequest(Object inputObject, Context context) {
+    public Object handleRequest(Object input, Context context) {
         AmazonEC2 ec2Client = AmazonEC2ClientBuilder.standard()
                 .withRegion("us-east-1")
                 .build();
         String instanceId = "i-088a86bc4c9b0265c";
         StartInstancesRequest request = new StartInstancesRequest().withInstanceIds(instanceId);
-        ec2Client.startInstances(request)
-                .getStartingInstances()
-                .get(0)
-                .getPreviousState()
-                .getName();
+        ec2Client.startInstances(request);
         System.out.println("Started the Instnace with ID: "+instanceId);
         return "{\"result\": \"hello lambda java\"}";
     }  
